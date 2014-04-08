@@ -31,5 +31,10 @@
     "vern-core": "latest",
     "vern-authentication": "latest"
   },
-  "dependencies": {}
+  "dependencies": {
+    "request": "^2.34.0",
+    "validator": "^3.7.0",
+    "prompt": "^0.2.12",
+    "shopify-node": "^0.2.0"
+  }
 }
