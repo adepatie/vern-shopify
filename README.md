@@ -56,7 +56,8 @@ method: 'POST',
 path: 'shopify/register'
 ```
 
-####shopifyAction - All Shopify API HTTP requests. ['get', 'post', 'put', 'delete']  (Requires authentication)
+####shopifyAction
+ - All Shopify API HTTP requests. ['get', 'post', 'put', 'delete']  (Requires authentication)
 
 ```javascript
 method: 'post',
