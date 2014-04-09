@@ -32,7 +32,37 @@ new vern().then(function($vern) {
 ```
 ## Authentication Methods
 
-loginURL - Handles Shopify account identification and authentication
+####getLoginURL
+- Retrieves a Shopify Login URL which returns an authorization code
+
+```javascript
+method: 'GET',
+path: '/shopify/login_url'
+```
+
+####postAuthorizationCode
+- Takes the authorization code and returns with an access_token
+
+```javascript
+method: 'POST',
+path: '/shopify/authorization_code'
+```
+
+####registerShopifyUser
+ - Registers a new Shopify user and returns an AuthenticationKey
+
+```javascript
+method: 'POST',
+path: 'shopify/register'
+```
+
+####shopifyAction - All Shopify API HTTP requests. ['get', 'post', 'put', 'delete']  (Requires authentication)
+
+```javascript
+method: 'post',
+path: '/shopify/action'
+```
+
 
 
 

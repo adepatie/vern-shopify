@@ -9,7 +9,9 @@ var prompt = require('prompt');
 new vern().then(function($vern) {
   $vern = require('vern-authentication')($vern);
   $vern = require('../lib')($vern);
+
   $vern.controllers.shopify = new $vern.controllers.ShopifyController($vern).init();
+
   request.get('http://0.0.0.0:3458/shopify/login_url', function(err, response) {
     console.log(response.body);
   });
