@@ -14,6 +14,7 @@ new vern().then(function($vern) {
     console.log(response.body);
   });
 
+
   var postData = {
     product: {
       title: 'Burton Custom Freestlye 151',
@@ -47,24 +48,48 @@ new vern().then(function($vern) {
       console.log(result.code);
 
       request.post('http://0.0.0.0:3458/shopify/authorization_code', {form: {code: result.code}}, function (err, response) {
+
         console.log(response.body);
         prompt.get(['access_token'], function (err, result) {
 
           request.post('http://0.0.0.0:3458/shopify/register', {form: {access_token: result.access_token, email: 'shopify@typefoo.com', password: 'test123'}}, function (err, response) {
-            console.log(response.body);
 
-            request.post('http://0.0.0.0:3458/shopify/action', {form: { action: 'get', path: '/admin/orders.json', access_token: result.access_token}}, function (err, response) {
+            console.log(response.body);
+            var resp = JSON.parse(response.body);
+
+            request.post('http://0.0.0.0:3458/shopify/action', { headers: { 'authentication-key': resp.pkg.data.authenticationKey }, form: { action: 'get', path: '/admin/orders.json'}}, function (err, response) {
+
+              console.log('GET log');
               console.log(response.body);
             });
-            request.post('http://0.0.0.0:3458/shopify/action', {form: { action: 'post', path: '/admin/products.json', data: postData, access_token: result.access_token}}, function (err, response) {
+            request.post('http://0.0.0.0:3458/shopify/action', {  headers: { 'authentication-key': resp.pkg.data.authenticationKey }, form: { action: 'post', path: '/admin/products.json', data: postData}}, function (err, response) {
+              var pResp = JSON.parse(response.body);
+              console.log('POST log');
               console.log(response.body);
+              console.log(pResp.pkg.data.product.id);
+              var postData2 = {
+                product: {
+                  id: pResp.pkg.data.product.id,
+                  title: 'SNOWWBOURDSS'
+                }
+              };
+
+              request.post('http://0.0.0.0:3458/shopify/action', {  headers: { 'authentication-key': resp.pkg.data.authenticationKey }, form: { action: 'put', path: '/admin/products/' + pResp.pkg.data.product.id + '.json', data: postData2}}, function (err, response) {
+
+                console.log('PUT log');
+                console.log(response.body);
+                var puResp = JSON.parse(response.body);
+
+                // DELETE TEST: Data object with product ID must be sent in request
+                request.post('http://0.0.0.0:3458/shopify/action', {  headers: { 'authentication-key': resp.pkg.data.authenticationKey }, form: { action: 'delete', path: '/admin/products/' + puResp.pkg.data.product.id + '.json', data: postData2 }}, function (err, response) {
+                  console.log('DELETE log');
+                  console.log(err);
+                  console.log(response.body);
+                });
+              });
             });
-            request.post('http://0.0.0.0:3458/shopify/action', {form: { action: 'put', path: '/admin/products/12345.json', data: postData, access_token: result.access_token}}, function (err, response) {
-              console.log(response.body);
-            });
-            request.post('http://0.0.0.0:3458/shopify/action', {form: { action: 'delete', path: '/admin/products/12345.json', access_token: result.access_token}}, function (err, response) {
-              console.log(response.body);
-            });
+
+
 
           });
         });
