@@ -14,6 +14,10 @@ Handles basic OAuth authentication routines for Shopify
 
 * ShopifyController
 
+```javascript
+$vern.controllers.shopify = new $vern.controllers.ShopifyController($vern).init();
+```
+
 ## Configuration Requirements
 
 ```javascript
